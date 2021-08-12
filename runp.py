@@ -120,21 +120,21 @@ def process_data(data, params, save_dir):
     #     return data
 
     print("Processing training data.")
-    trainx = [[data["word_to_idx"][w] for w in sent] +
+    trainx = [[data["word_to_idx"][w] if w in data["word_to_idx"] else data["word_to_idx"["<UNK>"]] for w in sent] +
                 [params["VOCAB_SIZE"] + 1] * (params["MAX_SENT_LEN"] - len(sent))
                 for sent in data["train_x"]]
     trainy = [data["classes"].index(c) for c in data["train_y"]]
     data["train_x"], data["train_y"] = trainx, trainy
 
     print("Processing dev data.")
-    devx = [[data["word_to_idx"][w] for w in sent] +
+    devx = [[data["word_to_idx"][w] if w in data["word_to_idx"] else data["word_to_idx"["<UNK>"]] for w in sent] +
                 [params["VOCAB_SIZE"] + 1] * (params["MAX_SENT_LEN"] - len(sent))
                 for sent in data["dev_x"]]
     devy = [data["classes"].index(c) for c in data["dev_y"]]
     data["dev_x"], data["dev_y"] = devx, devy
 
     print("Processing test data.")
-    testx = [[data["word_to_idx"][w] for w in sent] +
+    testx = [[data["word_to_idx"][w] if w in data["word_to_idx"] else data["word_to_idx"["<UNK>"]] for w in sent] +
                 [params["VOCAB_SIZE"] + 1] * (params["MAX_SENT_LEN"] - len(sent))
                 for sent in data["test_x"]]
     testy = [data["classes"].index(c) for c in data["test_y"]]
@@ -168,7 +168,7 @@ def main():
     data = getattr(utils, f"read_{options.dataset}")(options.data_path, options.train_name, options.valid_name, "test.pkl")
     data2 = getattr(utils, f"read_{options.dataset}")(options.data_path, options.train_name, options.valid_name, options.test_name)
 
-    data["vocab"] = sorted(list(set([w for sent in data["train_x"] + data["dev_x"] + data["test_x"] for w in sent])))
+    data["vocab"] = sorted(list(set([w for sent in data["train_x"] + data["dev_x"] for w in sent]))) + ["<UNK>"]
     data["classes"] = sorted(list(set(data["train_y"])))
     data["word_to_idx"] = {w: i for i, w in enumerate(data["vocab"])}
     data["idx_to_word"] = {i: w for i, w in enumerate(data["vocab"])}
