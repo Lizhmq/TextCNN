@@ -1,6 +1,9 @@
 
 # Convolutional Neural Networks for Sentence Classification
 
+## Notes
+This is a repo forked from [galsang/CNN-sentence-classification-pytorch](https://github.com/galsang/CNN-sentence-classification-pytorch) with some small modifications.
+
 This is the implementation of [Convolutional Neural Networks for Sentence Classification (Y.Kim, EMNLP 2014)](http://www.aclweb.org/anthology/D14-1181) on **Pytorch**.
 
 
